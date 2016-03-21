@@ -20,20 +20,31 @@
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [reagent.core :as r]
             [cljs-http.client :as http]
-            [cljs.core.async :refer [<!]]))
+            [cljs.core.async :refer [<! timeout]]))
 
 (defonce app-state
   (r/atom
     {}))
 
 (defn root-view [state]
-  (r/with-let [_ (go (let [data (:body (<! (http/get "data/places.json")))]
-                       (swap! state assoc-in [:data] data)))]
-    [:div.content
-     [:h1 "Where should we go for lunch?"]
-     [:div.button
-      {:on-click #(prn "Chose!")}
-      "Choose!"]]))
+  (r/with-let
+    [_ (go (let [data (:body (<! (http/get "data/places.json")))]
+             (swap! state assoc-in [:data] data)))
+     choose (fn []
+              (go (doseq [i (range 10)]
+                    (do
+                      (swap! state assoc-in [:choice]
+                             (rand-nth (:data @state)))
+                      (<! (timeout 50))))))]
+
+    (if-let [choice (:choice @state)]
+      [:div.content
+       (str choice)]
+      [:div.content
+       [:h1 "Where should we go for lunch?"]
+       [:div.button
+        {:on-click choose}
+        "Choose!"]])))
 
 (defn init-app! []
   (enable-console-print!)

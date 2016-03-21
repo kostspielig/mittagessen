@@ -31,20 +31,31 @@
     [_ (go (let [data (:body (<! (http/get "data/places.json")))]
              (swap! state assoc-in [:data] data)))
      choose (fn []
-              (go (doseq [i (range 10)]
-                    (do
-                      (swap! state assoc-in [:choice]
-                             (rand-nth (:data @state)))
-                      (<! (timeout 50))))))]
+              (go
+                (swap! state assoc-in [:choosing] true)
+                (doseq [i (range 10)]
+                  (swap! state assoc-in [:choice]
+                         (rand-nth (:data @state)))
+                  (<! (timeout 100)))
+                (swap! state assoc-in [:choosing] false)))]
 
     (if-let [choice (:choice @state)]
+      ;; We already have a choice
       [:div.content
-       (str choice)]
+       {:style {:background-color (:bg choice)
+                :color (:fg choice)}}
+       [:div.centered
+        [:h1 (:name choice)]
+        (when-not (:choosing @state)
+          [:div.absolute
+           [:div.button
+            {:style {:border-color (:fg choice)}
+             :on-click choose} "Again?"]])]]
+      ;; First time question
       [:div.content
-       [:h1 "Where should we go for lunch?"]
-       [:div.button
-        {:on-click choose}
-        "Choose!"]])))
+       [:div.centered
+        [:h1 "Where should we go for lunch?"]
+        [:div.absolute [:div.button {:on-click choose} "Choose!"]]]])))
 
 (defn init-app! []
   (enable-console-print!)

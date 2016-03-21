@@ -1,27 +1,27 @@
 - name: Volksbüne Kantine
-  bg: saddle brown
-  fg: wheat
+  bg: SaddleBrown
+  fg: Wheat
 
 - name: Fleischerei
-  bg: burlywood
-  fg: dark red
+  bg: Burlywood
+  fg: DarkRed
 
 - name: Falafel Kiez
-  bg: dark green
-  fg: pale green
+  bg: DarkGreen
+  fg: PaleGreen
 
 - name: Man-ngo
-  bg: coral
-  fg: cornsilk
+  bg: Coral
+  fg: Cornsilk
 
 - name: Schwarze Pumpe
-  bg: black
-  fg: sienna
+  bg: Black
+  fg: Sienna
 
 - name: Mozarella & Pomodoro
-  bg: firebrick
-  fg: green yellow
+  bg: Firebrick
+  fg: GreenYellow
 
 - name: Côcô
-  bg: dark sea green
-  fg: hot pink
+  bg: SeaGreen
+  fg: HotPink

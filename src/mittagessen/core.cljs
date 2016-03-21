@@ -17,14 +17,20 @@
 ;; <http://www.gnu.org/licenses/>.
 
 (ns mittagessen.core
-  (:require [reagent.core :as r]))
+  (:require-macros [cljs.core.async.macros :refer [go]])
+  (:require [reagent.core :as r]
+            [cljs-http.client :as http]
+            [cljs.core.async :refer [<!]]))
 
 (defonce app-state
   (r/atom
     {}))
 
 (defn root-view [state]
-  [:h1 "Hello world!!"])
+  (r/with-let [_ (go (let [data (:body (<! (http/get "data/places.json")))]
+                       (swap! state assoc-in [:data] data)))]
+    [:h1 "Hello world!"
+     [:p (str (:data @state))]]))
 
 (defn init-app! []
   (enable-console-print!)

@@ -29,8 +29,11 @@
 (defn root-view [state]
   (r/with-let [_ (go (let [data (:body (<! (http/get "data/places.json")))]
                        (swap! state assoc-in [:data] data)))]
-    [:h1 "Hello world!"
-     [:p (str (:data @state))]]))
+    [:div.content
+     [:h1 "Where should we go for lunch?"]
+     [:div.button
+      {:on-click #(prn "Chose!")}
+      "Choose!"]]))
 
 (defn init-app! []
   (enable-console-print!)

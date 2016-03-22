@@ -45,7 +45,8 @@
        (when-not (:choosing @state)
          [:div.absolute
           [:div.button
-           {:style {:border-color (:fg choice)}
+           {:style {:border-color (:fg choice)
+                    :background-color (:bg choice)}
             :on-click choose} "Again?"]])]
       ;; First time question
       [:div.centered

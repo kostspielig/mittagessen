@@ -52,6 +52,39 @@
        [:h1 "Where should we go for lunch?"]
        [:div.absolute [:div.button {:on-click choose} "Choose!"]]])))
 
+(defn emoji-view [emoji]
+  (r/with-let [generate (fn []
+                          {:translate [(rand (.-innerWidth js/window))
+                                       (rand (.-innerHeight js/window))]
+                           :scale (+ 0.2 (rand 3))
+                           :duration (+ 2000 (rand-int 10000))})
+               data (r/atom (generate))
+               _ (go (loop []
+                       (reset! data (generate))
+                       (<! (timeout (:duration @data)))
+                       (recur)))]
+    (let [{[x y] :translate
+           scale :scale
+           dur   :duration} @data]
+      [:div {:style {:position "absolute"
+                     :transform (str "translate(" x "px," y "px) "
+                                     "scale(" scale ", " scale ")")
+                     :transition (str "transform " dur "ms linear")}}
+       emoji])))
+
+(defn emojis-view []
+  (r/with-let
+    [emojis ["🦀""🧀""🌭""🌮""🌯""🍿""🍾""🌶""🐖""🐷""🐔""🍉"
+             "🍇""🍊""🍋""🍌""🍓""🍅""🍆""🌽""🍑""🍐""🍎""🍏"
+             "🍍""🍈""🍄""🍞""🍖""🍗""🍔""🍟""🍕""🍲""🍱""🍙"
+             "🍚""🍛""🍜""🍝""🍠""🍢""🍣""🍤""🍥""🍡""🍦""🍧"
+             "🍨""🍩""🍪""🎂""🍰""🍫""🍬""🍭""🍮""🍯""🍼""🍵"
+             "🍶""🍷""🍸""🍹""🍺""🍻""🍴""🍳"]]
+    [:div.emojis
+     (for [emoji emojis]
+       ^{:key emoji}
+       [emoji-view emoji])]))
+
 (defn root-view [state]
   (go
     (let [data (:body (<! (http/get "data/places.json")))]
@@ -61,6 +94,7 @@
      (when-let [choice (:choice @state)]
        {:style {:background-color (:bg choice)
                 :color (:fg choice)}})
+     [emojis-view]
      (when (:data @state)
        [game-view state])]))
 

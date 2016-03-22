@@ -23,14 +23,13 @@
             [cljs.core.async :refer [<! timeout]]))
 
 (defonce app-state
-  (r/atom
-    {}))
+  (r/atom {:data nil
+           :choice nil
+           :choosing false}))
 
-(defn root-view [state]
+(defn game-view [state]
   (r/with-let
-    [_ (go (let [data (:body (<! (http/get "data/places.json")))]
-             (swap! state assoc-in [:data] data)))
-     choose (fn []
+    [choose (fn []
               (go
                 (swap! state assoc-in [:choosing] true)
                 (doseq [i (range 10)]
@@ -41,21 +40,29 @@
 
     (if-let [choice (:choice @state)]
       ;; We already have a choice
-      [:div.content
-       {:style {:background-color (:bg choice)
-                :color (:fg choice)}}
-       [:div.centered
-        [:h1 (:name choice)]
-        (when-not (:choosing @state)
-          [:div.absolute
-           [:div.button
-            {:style {:border-color (:fg choice)}
-             :on-click choose} "Again?"]])]]
+      [:div.centered
+       [:h1 (:name choice)]
+       (when-not (:choosing @state)
+         [:div.absolute
+          [:div.button
+           {:style {:border-color (:fg choice)}
+            :on-click choose} "Again?"]])]
       ;; First time question
-      [:div.content
-       [:div.centered
-        [:h1 "Where should we go for lunch?"]
-        [:div.absolute [:div.button {:on-click choose} "Choose!"]]]])))
+      [:div.centered
+       [:h1 "Where should we go for lunch?"]
+       [:div.absolute [:div.button {:on-click choose} "Choose!"]]])))
+
+(defn root-view [state]
+  (go
+    (let [data (:body (<! (http/get "data/places.json")))]
+      (swap! state assoc-in [:data] data)))
+  (fn [state]
+    [:div.content
+     (when-let [choice (:choice @state)]
+       {:style {:background-color (:bg choice)
+                :color (:fg choice)}})
+     (when (:data @state)
+       [game-view state])]))
 
 (defn init-app! []
   (enable-console-print!)

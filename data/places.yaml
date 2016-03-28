@@ -75,5 +75,78 @@
 - name: I Due Forni
   where: https://goo.gl/maps/frGaMCPd6VE2
   bg: Red
-  fg: White
+  fg: Yellow
   chance: 0.2
+
+- name: Thai Window Asia
+  where: https://goo.gl/maps/1hhsGb6zTKD2
+  bg: "#46EC10"
+  fg: "#E91418"
+
+- name: Metropolitan Coffee
+  where: https://goo.gl/maps/TAAh9ut9BVt
+  bg: SkyBlue
+  fg: MidnightBlue
+
+- name: Pizza-Scheune
+  where: https://goo.gl/maps/EfXBCnCsARr
+  bg: DarkSlateGray
+  fg: PeachPuff
+  chance: 0.2
+
+- name: The Klub Kitchen
+  where: https://goo.gl/maps/NLWGGMKjGcE2
+  bg: "#3C4650"
+  fg: white
+  chance: 0.3
+
+- name: YamYam
+  where: https://goo.gl/maps/G9pXwv2wpVx
+  bg: WhiteSmoke
+  fg: "#E50D00"
+  chance: 0.2
+
+- name: Makoto
+  where: https://goo.gl/maps/cEk9z6xYXMM2
+  bg: "#EB1C24"
+  fg: white
+  chance: 0.2
+
+- name: Prince
+  where: https://goo.gl/maps/kcB8gkXzaHk
+  bg: "#333333"
+  fg: "#49AFE8"
+  chance: 0.1
+
+- name: Com Viet
+  where: https://goo.gl/maps/zwszzcKoDQF2
+  bg: "#F5E84E"
+  fg: "#3C9926"
+  chance: 0.5
+
+- name: Pho Co
+  where: https://goo.gl/maps/HMBx2TfhzCp
+  bg: "#232323"
+  fg: "#CEE718"
+  chance: 0.5
+
+- name: BioBistro im LPG BioMarkt
+  where: https://goo.gl/maps/XxeZ5bvZKgk
+  bg: "#FFD41D"
+  fg: "#325C0A"
+
+- name: Das Pfeffer
+  where: https://goo.gl/maps/oqj3YfPh9c82
+  bg: "#197A42"
+  fg: "#E11D2A"
+  chance: 0.3
+
+- name: Pfefferbett Hostel
+  where: https://goo.gl/maps/3idPuRSu1J92
+  bg: "#E2676E"
+  fg: "#393935"
+
+- name: Momos
+  where: https://goo.gl/maps/fm9DupQmG9y
+  bg: "#D7C39E"
+  fg: "#264921"

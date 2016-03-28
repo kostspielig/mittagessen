@@ -29,14 +29,17 @@
 
 (defn game-view [state]
   (r/with-let
-    [choose (fn []
-              (go
-                (swap! state assoc-in [:choosing] true)
-                (doseq [i (range 10)]
-                  (swap! state assoc-in [:choice]
-                         (rand-nth (:data @state)))
-                  (<! (timeout 100)))
-                (swap! state assoc-in [:choosing] false)))]
+    [choose-place!
+     (fn []
+       (go
+         (swap! state assoc-in [:choosing] true)
+         (doseq [i (range 10)]
+           (swap! state assoc-in [:choice]
+             (rand-nth (:data @state)))
+           (<! (timeout 100)))
+         (swap! state assoc-in [:choosing] false)))
+
+     reset-place! #(swap! state assoc-in [:choice] nil)]
 
     (if-let [choice (:choice @state)]
       ;; We already have a choice
@@ -44,14 +47,12 @@
        [:h1 (:name choice)]
        (when-not (:choosing @state)
          [:div.absolute
-          [:div.button
-           {:style {:border-color (:fg choice)
-                    :background-color (:bg choice)}
-            :on-click choose} "Again?"]])]
+          [:a.clickable {:on-click reset-place!}
+           "I don't like this result!"]])]
       ;; First time question
       [:div.centered
        [:h1 "Where should we go for lunch?"]
-       [:div.absolute [:div.button {:on-click choose} "Choose!"]]])))
+       [:div.absolute [:div.button {:on-click choose-place!} "Choose!"]]])))
 
 (defn emoji-view [emoji]
   (r/with-let [generate (fn []

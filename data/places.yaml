@@ -1,27 +1,34 @@
 - name: Volksbüne Kantine
+  where: https://goo.gl/maps/bszVGR9RaqM2
   bg: SaddleBrown
   fg: Wheat
 
 - name: Fleischerei
+  where: https://goo.gl/maps/rMASjDCnvN32
   bg: Burlywood
   fg: DarkRed
 
-- name: Falafel Kiez
+- name: Kiez Falafel
+  where: https://goo.gl/maps/zLrPPLPNyQE2
   bg: DarkGreen
   fg: PaleGreen
 
-- name: Man-ngo
+- name: Manngo
+  where: https://goo.gl/maps/44DSvPXVm4p
   bg: Coral
   fg: Cornsilk
 
 - name: Schwarze Pumpe
+  where: https://goo.gl/maps/wQy22xScKBr
   bg: Black
   fg: Sienna
 
 - name: Mozarella & Pomodoro
+  where: https://goo.gl/maps/WHy13tzyYmz
   bg: Firebrick
   fg: GreenYellow
 
 - name: Côcô
+  where: https://goo.gl/maps/UJcRdHaZdhG2
   bg: SeaGreen
   fg: HotPink

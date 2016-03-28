@@ -43,10 +43,15 @@
 
     (if-let [choice (:choice @state)]
       ;; We already have a choice
-      [:div.centered
-       [:h1 (:name choice)]
+      [:div.full
+       [:div.centered
+        [:h1 (:name choice)]
+        (when-not (:choosing @state)
+          [:div.absolute
+           [:a {:href (:where choice)}
+            "Where is this?"]])]
        (when-not (:choosing @state)
-         [:div.absolute
+         [:div.bottom
           [:a.clickable {:on-click reset-place!}
            "I don't like this result!"]])]
       ;; First time question

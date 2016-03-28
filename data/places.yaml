@@ -1,3 +1,42 @@
+#
+#  This is the database of places for http://sinusoid.es/mittagessen
+#
+#
+#  Format
+#  ------
+#
+#  Each entry describes a lunch option close to the Ableton
+#  office. Each entry has the following required attributes:
+#
+#      name:    Name of the place
+#      where:   link to a map to find the place
+#      bg:      html color for the background of the page when
+#               showing the plaec
+#      fg:      html color for foreground elements
+#
+#  Each entry has the following optional attributes:
+#
+#      chance:  relative probability (default: 1. see algorithm)
+#
+#
+#  Algorithm
+#  ---------
+#
+#  The app uses a kind of "bucket probability distribution" for
+#  choosing the place where to go.  You can think of it as throwing a
+#  coin towards a set of buckets, each bucket representing an option.
+#  Given all buckets having the same size, the coin has equal
+#  probability to fall in each.  However, buckets have different
+#  sizes, such that if a bucket is twice as big as another bucket, it
+#  is twice as likely for the coin to fall in the bigger one.
+#
+#  This allows to control the relative probability of discrete events
+#  without global parameters.
+#
+#  The bucket size for a place is controlled by the `chance`
+#  parameter.  When unspecified, it defaults to `1`
+#
+
 - name: Volksbüne Kantine
   where: https://goo.gl/maps/bszVGR9RaqM2
   bg: SaddleBrown

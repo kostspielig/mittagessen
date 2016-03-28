@@ -27,6 +27,16 @@
            :choice nil
            :choosing false}))
 
+(defn rand-nth-bucket [elems bucket]
+  (let [total (reduce + (map bucket elems))
+        n     (rand total)
+        step
+        (fn [[acc last] elem]
+          (if (< n acc)
+            (reduced [acc last])
+            [(+ acc (bucket elem)) elem]))]
+    (second (reduce step [0 nil] elems))))
+
 (defn game-view [state]
   (r/with-let
     [choose-place!
@@ -37,9 +47,15 @@
            (swap! state assoc-in [:choice]
              (rand-nth (:data @state)))
            (<! (timeout 100)))
+         (swap! state assoc-in [:choice]
+           (rand-nth-bucket
+             (:data @state)
+             #(if (number? (:chance %))
+                (:chance %) 1)) "choice!")
          (swap! state assoc-in [:choosing] false)))
 
-     reset-place! #(swap! state assoc-in [:choice] nil)]
+     reset-place!
+     #(swap! state assoc-in [:choice] nil)]
 
     (if-let [choice (:choice @state)]
       ;; We already have a choice

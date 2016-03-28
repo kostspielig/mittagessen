@@ -32,3 +32,9 @@
   where: https://goo.gl/maps/UJcRdHaZdhG2
   bg: SeaGreen
   fg: HotPink
+
+- name: I Due Forni
+  where: https://goo.gl/maps/frGaMCPd6VE2
+  bg: Red
+  fg: White
+  chance: 0.2

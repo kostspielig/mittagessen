@@ -76,10 +76,13 @@
        [:div.absolute [:div.button {:on-click choose-place!} "Choose!"]]])))
 
 (defn emoji-view [emoji]
-  (r/with-let [generate (fn []
+  (r/with-let [html-text (.unicodeToImage js/emojione emoji)
+               view-impl (constantly [:div {:dangerouslySetInnerHTML
+                                            {:__html html-text}}])
+               generate (fn []
                           {:translate [(rand (.-innerWidth js/window))
                                        (rand (.-innerHeight js/window))]
-                           :scale (+ 0.2 (rand 3))
+                           :scale (+ 0.2 (rand 0.8))
                            :duration (+ 2000 (rand-int 10000))})
                data (r/atom (generate))
                _ (go (loop []
@@ -92,9 +95,8 @@
       [:div {:style {:position "absolute"
                      :transform (str "translate(" x "px," y "px) "
                                      "scale(" scale ", " scale ")")
-                     :transition (str "transform " dur "ms linear")}
-             :dangerouslySetInnerHTML
-             {:__html (.unicodeToImage js/emojione emoji)}}])))
+                     :transition (str "transform " dur "ms linear")}}
+       [view-impl emoji]])))
 
 (defn emojis-view []
   (r/with-let

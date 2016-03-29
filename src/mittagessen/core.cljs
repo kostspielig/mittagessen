@@ -68,12 +68,14 @@
             "Where is this?"]])]
        (when-not (:choosing @state)
          [:div.bottom
-          [:a.clickable {:on-click reset-place!}
+          [:button.clickable {:on-click reset-place!}
            "I don't like this result!"]])]
+
       ;; First time question
-      [:div.centered
-       [:h1 "Where should we go for lunch?"]
-       [:div.absolute [:div.button {:on-click choose-place!} "Choose!"]]])))
+      [:div.full
+       [:div.centered
+        [:h1 "Where should we go for lunch?"]
+        [:div.absolute [:button.button {:on-click choose-place!} "Choose!"]]]])))
 
 (defn emoji-view [emoji]
   (r/with-let [html-text (.unicodeToImage js/emojione emoji)

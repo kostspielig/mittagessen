@@ -92,8 +92,9 @@
       [:div {:style {:position "absolute"
                      :transform (str "translate(" x "px," y "px) "
                                      "scale(" scale ", " scale ")")
-                     :transition (str "transform " dur "ms linear")}}
-       emoji])))
+                     :transition (str "transform " dur "ms linear")}
+             :dangerouslySetInnerHTML
+             {:__html (.unicodeToImage js/emojione emoji)}}])))
 
 (defn emojis-view []
   (r/with-let

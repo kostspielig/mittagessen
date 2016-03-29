@@ -20,6 +20,7 @@ html, body
 h1
     font-size: 2.6em
     line-height: 1.1em
+    margin: 20px 10px
 
 .full
     position: absolute
@@ -54,12 +55,12 @@ a
 .button
     position: relative
     border: 6px solid red
-    border-radius: 100%
+    border-radius: 100px
     color: red
     margin: 0 auto
     display: inline-block
     text-align: center
-    padding: 20px
+    padding: 10px 25px
     font-size: 1.6em
     font-weight: bold
     cursor: pointer
@@ -92,3 +93,17 @@ a
     width: 100%
     clear: both !important
     display: block
+
+@media all and (max-width: 400px)
+    body
+        font-size: 16px
+    .button
+        border-width: 5px
+        padding: 8px 20px
+
+@media all and (max-width: 320px)
+    body
+        font-size: 14px
+    .button
+        border-width: 4px
+        padding: 8px 20px

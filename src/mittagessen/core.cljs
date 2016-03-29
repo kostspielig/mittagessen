@@ -25,7 +25,8 @@
 (defonce app-state
   (r/atom {:data nil
            :choice nil
-           :choosing false}))
+           :choosing false
+           :options #{:disabled}}))
 
 (defn rand-nth-bucket [elems bucket]
   (let [total (reduce + (map bucket elems))
@@ -36,6 +37,37 @@
             (reduced [acc last])
             [(+ acc (bucket elem)) elem]))]
     (second (reduce step [0 nil] elems))))
+
+(defn options-view [state]
+  (r/with-let
+    [visible (r/track #(not (:disabled @state)))
+
+     toggle-option!
+     (fn [tag] (swap! state #((if (tag %) disj conj) % tag)))
+
+     option-view
+     (fn [state tag name]
+       (r/with-let [toggled (r/track #(tag @state))]
+         [:div.option.clickable {:class (when @toggled "checked")
+                                 :on-click #(toggle-option! tag)}
+          [:div.check] name]))]
+    [:div
+     [:div.options {:class (if @visible "visible" "invisible")}
+      [:div.columns
+       [:div.column
+        [option-view state :hurry "I'm in a hurry"]
+        [option-view state :chill "Let's chill"]
+        [option-view state :hungry "I'm very hungry"]
+        [option-view state :healthy "Healthy, please!"]]
+       [:div.column
+        [option-view state :broke "I'm broke"]
+        [option-view state :fancy "Let's go fancy"]
+        [option-view state :rainy "It's rainy"]
+        [option-view state :sunny "It's sunny"]]]]
+     [:div.bottom
+      [:button.clickable {:class (when @visible "checked")
+                          :on-click #(toggle-option! :disabled)}
+       (if @visible "Less options!" "Moar options!")]]]))
 
 (defn game-view [state]
   (r/with-let
@@ -75,7 +107,9 @@
       [:div.full
        [:div.centered
         [:h1 "Where should we go for lunch?"]
-        [:div.absolute [:button.button {:on-click choose-place!} "Choose!"]]]])))
+        [:div.absolute [:button.button {:on-click choose-place!} "Choose!"]]]
+       [options-view (r/cursor state [:options])]])))
+
 
 (defn emoji-view [emoji]
   (r/with-let [html-text (.unicodeToImage js/emojione emoji)

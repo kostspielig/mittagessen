@@ -17,6 +17,8 @@
 #  Each entry has the following optional attributes:
 #
 #      chance:  relative probability (default: 1. see algorithm)
+#      options: probability modifiers (default: 0, see algorithm)
+#        hurry, chill, hungry, healthy, broke, fancy, rainy, sunny
 #
 #
 #  Algorithm
@@ -36,31 +38,52 @@
 #  The bucket size for a place is controlled by the `chance`
 #  parameter.  When unspecified, it defaults to `1`
 #
+#  The elements specified in `options` are modifiers applied when the
+#  user selects things like "I'm hungry", "I'm in a hurry", etc.  They
+#  can be used to modify the bucket size depending on context.  The
+#  options are applied by *summing* them to the basic `chance`.  Thus,
+#  they can be aggregated when multiple options are selected, and they
+#  can be negative (e.g. you should not go to Duo Forni in a hurry!)
+#
 
 - name: Volksbüne Kantine
   where: https://goo.gl/maps/bszVGR9RaqM2
   bg: SaddleBrown
   fg: Wheat
+  options:
+    hurry: 1
+    rainy: 1
 
 - name: Fleischerei
   where: https://goo.gl/maps/rMASjDCnvN32
   bg: Burlywood
   fg: DarkRed
+  options:
+    hurry: -1
+    fancy: 1
 
 - name: Kiez Falafel
   where: https://goo.gl/maps/zLrPPLPNyQE2
   bg: DarkGreen
   fg: PaleGreen
+  options:
+    hungry: 1
+    healthy: 1
 
 - name: Manngo
   where: https://goo.gl/maps/44DSvPXVm4p
   bg: Coral
   fg: Cornsilk
+  options:
+    rainy: 1
 
 - name: Schwarze Pumpe
   where: https://goo.gl/maps/wQy22xScKBr
   bg: Black
   fg: Sienna
+  options:
+    hungry: 1
+    rainy: 1
 
 - name: Mozarella & Pomodoro
   where: https://goo.gl/maps/WHy13tzyYmz
@@ -99,6 +122,9 @@
   bg: "#3C4650"
   fg: white
   chance: 0.3
+  options:
+    healthy: 1
+    fancy: 1
 
 - name: YamYam
   where: https://goo.gl/maps/G9pXwv2wpVx
@@ -111,12 +137,16 @@
   bg: "#EB1C24"
   fg: white
   chance: 0.2
+  options:
+    chill: 1
 
 - name: Prince
   where: https://goo.gl/maps/kcB8gkXzaHk
   bg: "#333333"
   fg: "#49AFE8"
   chance: 0.1
+  options:
+    fancy: 1
 
 - name: Com Viet
   where: https://goo.gl/maps/zwszzcKoDQF2
@@ -140,13 +170,20 @@
   bg: "#197A42"
   fg: "#E11D2A"
   chance: 0.3
+  options:
+    fancy: 1
 
 - name: Pfefferbett Hostel
   where: https://goo.gl/maps/3idPuRSu1J92
   bg: "#E2676E"
   fg: "#393935"
+  options:
+    sunny: 1
 
 - name: Momos
   where: https://goo.gl/maps/fm9DupQmG9y
   bg: "#D7C39E"
   fg: "#264921"
+  options:
+    hurry: 1
+    sunny: 1

@@ -71,7 +71,16 @@
 
 (defn game-view [state]
   (r/with-let
-    [choose-place!
+    [chance
+     (fn [place filters]
+       (let [filters (:options @state)
+             chance- (:chance place)
+             options (:options place)]
+         (max 0
+              (+ (if (number? chance-) chance- 1)
+                 (reduce #(+ %1 (get options %2 0)) 0 filters)))))
+
+     choose-place!
      (fn []
        (go
          (swap! state assoc-in [:choosing] true)
@@ -80,10 +89,7 @@
              (rand-nth (:data @state)))
            (<! (timeout 100)))
          (swap! state assoc-in [:choice]
-           (rand-nth-bucket
-             (:data @state)
-             #(if (number? (:chance %))
-                (:chance %) 1)) "choice!")
+           (rand-nth-bucket (:data @state) chance))
          (swap! state assoc-in [:choosing] false)))
 
      reset-place!

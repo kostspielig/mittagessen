@@ -28,6 +28,9 @@
            :choosing false
            :options #{:disabled}}))
 
+(def css-transitions
+  (r/adapt-react-class js/React.addons.CSSTransitionGroup))
+
 (defn rand-nth-bucket [elems bucket]
   (let [total (reduce + (map bucket elems))
         n     (rand total)
@@ -94,27 +97,33 @@
 
      reset-place!
      #(swap! state assoc-in [:choice] nil)]
-
-    (if-let [choice (:choice @state)]
-      ;; We already have a choice
-      [:div.full
-       [:div.centered
-        [:h1 (:name choice)]
+    [css-transitions {:transition-name "fade"
+                      :transition-appear true
+                      :transition-appear-timeout 500
+                      :transition-enter-timeout 500
+                      :transition-leave-timeout 500}
+     (if-let [choice (:choice @state)]
+       ;; We already have a choice
+       ^{:key :result-page}
+       [:div.full
+        [:div.centered
+         [:h1 (:name choice)]
+         (when-not (:choosing @state)
+           [:div.absolute
+            [:a {:href (:where choice)}
+             "Where is this?"]])]
         (when-not (:choosing @state)
-          [:div.absolute
-           [:a {:href (:where choice)}
-            "Where is this?"]])]
-       (when-not (:choosing @state)
-         [:div.bottom
-          [:button.clickable {:on-click reset-place!}
-           "I don't like this result!"]])]
+          [:div.bottom
+           [:button.clickable {:on-click reset-place!}
+            "I don't like this result!"]])]
 
-      ;; First time question
-      [:div.full
-       [:div.centered
-        [:h1 "Where should we go for lunch?"]
-        [:button.button {:on-click choose-place!} "Choose!"]]
-       [options-view (r/cursor state [:options])]])))
+       ;; First time question
+       ^{:key :ask-page}
+       [:div.full
+        [:div.centered
+         [:h1 "Where should we go for lunch?"]
+         [:button.button {:on-click choose-place!} "Choose!"]]
+        [options-view (r/cursor state [:options])]])]))
 
 
 (defn emoji-view [emoji]

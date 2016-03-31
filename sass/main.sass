@@ -1,27 +1,3 @@
-@font-face
-    font-family: "Emoji One"
-    src: url('../static/files/emojione-android.ttf')
-    text-decoration: none
-    font-style: normal
-
-@font-face
-    font-family: "Emoji One SVG"
-    src: url('../static/files/EmojiOneColor-SVGinOT.ttf')
-    text-decoration: none
-    font-style: normal
-
-@font-face
-    font-family: "EmojiSymbols"
-    src: url('../static/files/EmojiSymbols-Regular.woff') format('woff')
-    text-decoration: none
-    font-style: normal
-
-@font-face
-    font-family: "Symbola Emoji"
-    src: url('../static/files/Symbola-Emoji.woff') format('woff')
-    text-decoration: none
-    font-style: normal
-
 html, body
     font-family: "Helvetica Neue", HelveticaNeue, "TeX Gyre Heros", TeXGyreHeros, FreeSans, "Nimbus Sans L", "Liberation Sans", Arimo, Helvetica, Arial, sans-serif
     font-size: 20px
@@ -34,16 +10,27 @@ html, body
 .hidden
     display: none
 
+.columns
+    margin: 0 auto
+    text-align: center
+    .column
+        display: inline-block
+        padding: 20px 10px
+        text-align: left
+
 .bottom
     position: absolute
     bottom: 0px
     width: 100%
     text-align: center
-    margin-bottom: 20px
+    margin-bottom: 1em
 
 h1
     font-size: 2.6em
     line-height: 1.1em
+    margin: 20px 10px
+    &.result
+        margin-top: -0.5em
 
 .full
     position: absolute
@@ -65,25 +52,40 @@ h1
 .clickable
     cursor: pointer
 
-a
+a, button
     color: inherit
     text-decoration: none
     font-weight: bold
+    border: 0
+    padding: 0
+    font-size: 1em
     border-bottom: 2px solid
+    background: transparent
+    &:focus
+        outline: none
 
-.bottom a
+.bottom a, .bottom button
     font-weight: normal
-    border-bottom: 1px dashed
+    box-sizing: border-box
+    padding-bottom: 0.1em
+    border-bottom: 0.1em solid
+    transition: all 0.3s ease-in-out
+    opacity: 0.6
+    &:hover
+        opacity: 1
+    &.checked
+        color: red
+        border-color: red
 
 .button
     position: relative
     border: 6px solid red
-    border-radius: 100%
+    border-radius: 100px
     color: red
     margin: 0 auto
     display: inline-block
     text-align: center
-    padding: 20px
+    padding: 10px 25px
     font-size: 1.6em
     font-weight: bold
     cursor: pointer
@@ -95,12 +97,15 @@ a
 
 
 .emojis
-    font-family: "Emoji One SVG"
     position: absolute
     line-height: 1.5
     width: 100%
     height: 100%
     opacity: 0.6
+    color: white
+    img.emojione
+        width: 64px
+        height: 64px
 
 .content
     overflow: hidden
@@ -108,8 +113,71 @@ a
     width: 100%
     height: 100%
     text-align: center
+    transition: background-color 200ms ease-in-out
 
 .clear
     width: 100%
     clear: both !important
     display: block
+
+
+.fade-enter, .fade-appear
+    opacity: 0
+    &.fade-enter-active, &.fade-appear-active
+        opacity: 1
+        transition: opacity 300ms ease-in
+.fade-leave
+    opacity: 1
+    &.fade-leave-active
+        opacity: 0
+        transition: opacity 200ms ease-in
+
+.options
+    position: absolute
+    top: 100%
+    width: 100%
+    padding-bottom: 2em
+    background: transparent
+    transform: translateY(0%)
+    transition: transform 500ms ease-in-out
+    &.visible
+        transform: translateY(-100%)
+    button.option
+        font-size: 1em
+        transition: all 300ms ease-in-out
+        font-weight: bold
+        border: 0
+        display: block
+        width: 100%
+        text-align: left
+        .check
+            display: inline-block
+            box-sizing: border-box
+            vertical-align: middle
+            margin: 0.2em 0.5em
+            width: 1em
+            height: 1em
+            background-color: transparent
+            border-radius: 1em
+            border: 0.15em solid red
+            transition: all 300ms ease-in-out
+        &.checked
+            color: red
+            .check
+                border: 0.5em solid red
+
+@media all and (max-width: 400px)
+    body
+        font-size: 16px
+    .button
+        border-width: 5px
+        padding: 8px 20px
+
+@media all and (max-width: 320px)
+    body
+        font-size: 14px
+    .options
+        padding-bottom: 1.2em
+    .button
+        border-width: 4px
+        padding: 8px 20px

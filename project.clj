@@ -33,6 +33,7 @@
        :compiler {:asset-path "js/release/out"
                   :output-to "resources/js/release/mittagessen.js"
                   :output-dir "resources/js/release/out"
+                  :externs ["externs.js"]
                   :main mittagessen.core
                   :optimizations :advanced
                   :pretty-print false}}]}

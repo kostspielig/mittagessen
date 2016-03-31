@@ -25,8 +25,10 @@
 (defonce app-state
   (r/atom {:data nil
            :choice nil
-           :choosing false
-           :options #{:disabled}}))
+           :options #{:disabled}
+           :animation {:duration 0
+                       :angle 0
+                       :choosing false}}))
 
 (def css-transitions
   (r/adapt-react-class js/React.addons.CSSTransitionGroup))
@@ -83,17 +85,35 @@
               (+ (if (number? chance-) chance- 1)
                  (reduce #(+ %1 (get options %2 0)) 0 filters)))))
 
+     animation (r/cursor state [:animation])
+
      choose-place!
      (fn []
-       (go
-         (swap! state assoc-in [:choosing] true)
-         (doseq [i (range 10)]
-           (swap! state assoc-in [:choice]
-             (rand-nth (:data @state)))
-           (<! (timeout 100)))
-         (swap! state assoc-in [:choice]
-           (rand-nth-bucket (:data @state) chance))
-         (swap! state assoc-in [:choosing] false)))
+       (reset! animation {:choosing true
+                          :angle 0
+                          :duration 0
+                          :ease "linear"})
+       (swap! state assoc-in [:choice]
+              (rand-nth (:data @state)))
+       (.requestAnimationFrame
+        js/window
+        (fn []
+          (go
+            (doseq [[i n] (map vector (range 11)
+                               (concat (range 2 8) (range 7 2 -1)))]
+              (reset! animation {:choosing true
+                                 :angle (/ (* (+ i 1) 360) 4)
+                                 :duration (/ 1000 n)
+                                 :ease "linear"})
+              (swap! state assoc-in [:choice]
+                     (rand-nth (:data @state)))
+              (<! (timeout (/ 1000 n))))
+            (swap! state assoc-in [:choice]
+                   (rand-nth-bucket (:data @state) chance))
+            (reset! animation {:choosing false
+                               :angle (/ (* 12 360) 4)
+                               :duration (/ 1000 1)
+                               :ease "ease-out"})))))
 
      reset-place!
      #(swap! state assoc-in [:choice] nil)]
@@ -107,12 +127,17 @@
        ^{:key :result-page}
        [:div.full
         [:div.centered
+         {:style
+          {:transform  (str "rotate(" (:angle @animation) "deg)")
+           :transition (str "transform "
+                            (:duration @animation) "ms "
+                            (:ease @animation))}}
          [:h1 (:name choice)]
-         (when-not (:choosing @state)
+         (when-not (:choosing @animation)
            [:div.absolute
             [:a {:href (:where choice)}
              "Where is this?"]])]
-        (when-not (:choosing @state)
+        (when-not (:choosing @animation)
           [:div.bottom
            [:button.clickable {:on-click reset-place!}
             "I don't like this result!"]])]
@@ -169,8 +194,12 @@
   (fn [state]
     [:div.content
      (when-let [choice (:choice @state)]
-       {:style {:background-color (:bg choice)
-                :color (:fg choice)}})
+       (let [animation (:animation @state)]
+         {:style {:background-color (:bg choice)
+                  :transition (str "all "
+                                   (:duration animation) "ms "
+                                   (:ease animation))
+                  :color (:fg choice)}}))
      [emojis-view]
      (when (:data @state)
        [game-view state])]))

@@ -132,7 +132,7 @@
            :transition (str "transform "
                             (:duration @animation) "ms "
                             (:ease @animation))}}
-         [:h1 (:name choice)]
+         [:h1.result (:name choice)]
          (when-not (:choosing @animation)
            [:div.absolute
             [:a {:href (:where choice)}

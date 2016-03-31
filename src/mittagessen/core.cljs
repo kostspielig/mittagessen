@@ -48,7 +48,7 @@
      option-view
      (fn [state tag name]
        (r/with-let [toggled (r/track #(tag @state))]
-         [:div.option.clickable {:class (when @toggled "checked")
+         [:button.option.clickable {:class (when @toggled "checked")
                                  :on-click #(toggle-option! tag)}
           [:div.check] name]))]
     [:div

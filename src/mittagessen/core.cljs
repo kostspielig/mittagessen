@@ -113,7 +113,7 @@
       [:div.full
        [:div.centered
         [:h1 "Where should we go for lunch?"]
-        [:div.absolute [:button.button {:on-click choose-place!} "Choose!"]]]
+        [:button.button {:on-click choose-place!} "Choose!"]]
        [options-view (r/cursor state [:options])]])))
 
 

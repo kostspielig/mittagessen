@@ -151,7 +151,7 @@
 - name: Com Viet
   where: https://goo.gl/maps/zwszzcKoDQF2
   bg: "#F5E84E"
-  fg: "#3C9926"
+  fg: "#3C9926"#264921
   chance: 0.5
 
 - name: Pho Co
@@ -187,3 +187,11 @@
   options:
     hurry: 1
     sunny: 1
+    
+- name: Marubi Ramen
+  where: https://goo.gl/maps/eBV7Pko5Eby
+  bg: "#ff6a9c"
+  fg: "#f5efbb"
+  options:
+    hurry: 1
+    rainy: 1
